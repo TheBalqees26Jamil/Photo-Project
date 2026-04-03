@@ -3,21 +3,21 @@ from PIL import Image
 import numpy as np
 import cv2
 
-st.set_page_config(page_title="مشروع معالجة الصور", layout="wide")
+st.set_page_config(page_title="Image Processing", layout="wide")
 
-# الحالة الافتراضية للصفحات
+
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
-# ---------- الصفحة الرئيسية ----------
+
 def home_page():
-    # الصورة الرئيسية
+    
     main_img = Image.open("PixelWise/Images/G1.png")
     st.image(main_img, use_container_width=True)
 
 
 
-    # عدد الدروس
+    
     lessons = [
         "Lesson 1: Digital Image ",
         "Lesson 2: Color Systems",
@@ -29,15 +29,14 @@ def home_page():
         "Lesson 8: Geometric Transformations"
     ]
 
-    # نرتب الأزرار في صفوف، كل صف يحتوي 3 أزرار
+    
     cols_per_row = 3
     for i in range(0, len(lessons), cols_per_row):
         cols = st.columns(cols_per_row)
         for j, lesson in enumerate(lessons[i:i+cols_per_row]):
             if cols[j].button(lesson):
-                st.session_state.page = f"lesson{i+j+1}"  # تحدد الصفحة المفتوحة
-
-# ---------- الدرس الأول ----------
+                st.session_state.page = f"lesson{i+j+1}"  
+# Lesson 1 
 def lesson1_page():
     main_img = Image.open("PixelWise/Images/L1.png")
     st.image(main_img, use_container_width=True)
@@ -46,11 +45,11 @@ def lesson1_page():
     uploaded_file = st.file_uploader("Download Photo", type=["jpg", "png", "jpeg"])
 
     if uploaded_file is not None:
-        # فتح الصورة
+        
         img = Image.open(uploaded_file)
         img_array = np.array(img)
 
-        # استخراج معلومات
+        
         height, width = img_array.shape[:2]
         channels = 1 if len(img_array.shape) == 2 else img_array.shape[2]
         bit_depth = img_array.dtype
@@ -59,17 +58,15 @@ def lesson1_page():
         st.write(f"Number of channels : {channels}")
         st.write(f"color Depth (bit depth): {bit_depth}")
 
-        # عرض الصورة
+        
         st.image(img, caption="Original photo",  use_container_width=True)
 
-    # زر العودة
+    
     if st.button("⬅️ Back"):
         st.session_state.page = "home"
 
 
-# ---------- الدرس الثاني ----------
-# ---------- الدرس الثاني ----------
-# ---------- الدرس الثاني ----------
+# Lesson 2 
 def lesson2_page():
     main_img = Image.open("PixelWise/Images/L2.png")
     st.image(main_img, use_container_width=True)
@@ -82,7 +79,7 @@ def lesson2_page():
             img = img.convert("RGB")
         img_array = np.array(img)
 
-        # عرض الصورة الأصلية
+        
         st.image(img, caption="Original photo", use_container_width=True)
 
         # Gray
@@ -107,7 +104,7 @@ def lesson2_page():
             mime="image/png"
         )
 
-        # قنوات R/G/B
+        #  R/G/B
         r, g, b = img.split()
         for channel, name in zip([r, g, b], ["R", "G", "B"]):
             st.image(channel, caption=f"Channel {name}", use_container_width=True)
@@ -118,10 +115,10 @@ def lesson2_page():
                 mime="image/png"
             )
 
-    # زر العودة
+    # 
     if st.button("⬅️ Back", key="lesson2_back"):
         st.session_state.page = "home"
-# ---------- الدرس الثالث ----------
+# Lesson 3 
 def lesson3_page():
     main_img = Image.open("PixelWise/Images/L3.png")
     st.image(main_img, use_container_width=True)
@@ -133,10 +130,10 @@ def lesson3_page():
             img = img.convert("RGB")
         img_array = np.array(img)
 
-        # عرض الصورة الأصلية
+        # 
         st.image(img, caption="Original Image", use_container_width=True)
 
-        # تعديل السطوع والعتامة
+        # 
         st.markdown("###Brightness and Opacity Modification")
         brightness = st.slider("Brightness (beta)", -100, 100, 0)
         contrast = st.slider("Contrast (alpha)", 0.1, 3.0, 1.0)
@@ -152,11 +149,10 @@ def lesson3_page():
         )
 
 
-    # زر العودة
     if st.button("⬅️ Back", key="lesson3_back"):
         st.session_state.page = "home"
 
-# ---------- الدرس الرابع ----------
+# Lesson 4 
 def lesson4_page():
     main_img = Image.open("PixelWise/Images/L4.png")
     st.image(main_img, use_container_width=True)
@@ -168,10 +164,10 @@ def lesson4_page():
             img = img.convert("RGB")
         img_array = np.array(img)
 
-        # عرض الصورة الأصلية
+        # 
         st.image(img, caption="Original image", use_container_width=True)
 
-        # اختيار نوع الفلتر
+        # 
         filter_type = st.selectbox("Select filter type", ["Gaussian Blur", "Sobel X", "Sobel Y", "Laplacian"])
         if filter_type == "Gaussian Blur":
             filtered_array = cv2.GaussianBlur(img_array, (5,5), 0)
@@ -194,7 +190,7 @@ def lesson4_page():
         filtered_img = Image.fromarray(filtered_array)
         st.image(filtered_img, caption=f"Image after applying  {filter_type}", use_container_width=True)
 
-        # زر تنزيل
+        # 
         st.download_button(
             label=f"⬇️ Download image after {filter_type}",
             data=filtered_img.tobytes(),
@@ -202,10 +198,10 @@ def lesson4_page():
             mime="image/png"
         )
 
-    # زر العودة
+    # 
     if st.button("⬅️ Back", key="lesson4_back"):
         st.session_state.page = "home"
-# ---------- الدرس الخامس ----------
+# Lesson 5 
 def lesson5_page():
     main_img = Image.open("PixelWise/Images/L5.png")
     st.image(main_img, use_container_width=True)
@@ -218,10 +214,10 @@ def lesson5_page():
             img = img.convert("RGB")
         img_array = np.array(img)
 
-        # عرض الصورة الأصلية
+        
         st.image(img, caption="Original image",  use_container_width=True)
 
-        # اختيار طريقة إزالة الضوضاء
+        #
         noise_filter = st.selectbox("Select noise removal method", ["Gaussian Blur", "Median Blur"])
         if noise_filter == "Gaussian Blur":
             denoised_array = cv2.GaussianBlur(img_array, (5,5), 0)
@@ -231,7 +227,7 @@ def lesson5_page():
         denoised_img = Image.fromarray(denoised_array)
         st.image(denoised_img, caption=f"Image after applying {noise_filter}",  use_container_width=True)
 
-        # زر تنزيل
+        #  
         st.download_button(
             label=f"⬇️ Download image after {noise_filter}",
             data=denoised_img.tobytes(),
@@ -239,11 +235,11 @@ def lesson5_page():
             mime="image/png"
         )
 
-    # زر العودة
+
     if st.button("⬅️ Back", key="lesson5_back"):
         st.session_state.page = "home"
 
-# ---------- الدرس السادس ----------
+# Lesson 6 
 def lesson6_page():
     main_img = Image.open("PixelWise/Images/L6.png")
     st.image(main_img , use_container_width=True)
@@ -252,13 +248,13 @@ def lesson6_page():
     if uploaded_file is not None:
         img = Image.open(uploaded_file)
         if img.mode != "L":
-            img = img.convert("L")  # تحويل الصورة إلى رمادية
+            img = img.convert("L")  
         img_array = np.array(img)
 
-        # عرض الصورة الأصلية
+        
         st.image(img, caption="Original image", use_container_width=True)
 
-        # اختيار طريقة كشف الحواف
+        
         edge_method = st.selectbox("Select edge detection method", ["Canny", "Sobel"])
         if edge_method == "Canny":
             edges_array = cv2.Canny(img_array, 100, 200)
@@ -271,7 +267,7 @@ def lesson6_page():
         edges_img = Image.fromarray(edges_array)
         st.image(edges_img, caption=f"Image after edge detection using {edge_method}", use_container_width=True)
 
-        # زر تنزيل
+        
         st.download_button(
             label=f"⬇️ Download image after edge detection ({edge_method})",
             data=edges_img.tobytes(),
@@ -279,11 +275,11 @@ def lesson6_page():
             mime="image/png"
         )
 
-    # زر العودة
+    
     if st.button("⬅️ Back", key="lesson6_back"):
         st.session_state.page = "home"
 
-# ---------- الدرس السابع ----------
+# Lesson 7
 def lesson7_page():
     main_img = Image.open("PixelWise/Images/L7.png")
     st.image(main_img , use_container_width=True)
@@ -297,10 +293,10 @@ def lesson7_page():
         gray = img.convert("L")
         img_array = np.array(gray)
 
-        # عرض الصورة الأصلية
+        
         st.image(gray, caption="Original image (grayscale)", use_container_width=True)
 
-        # اختيار العملية المورفولوجية
+        
         morph_op = st.selectbox("Select morphological operation", ["Erosion", "Dilation", "Opening", "Closing"])
         kernel_size = st.slider("Kernel size", 1, 10, 3)
         kernel = np.ones((kernel_size, kernel_size), np.uint8)
@@ -311,13 +307,13 @@ def lesson7_page():
             result_array = cv2.dilate(img_array, kernel, iterations=1)
         elif morph_op == "Opening":
             result_array = cv2.morphologyEx(img_array, cv2.MORPH_OPEN, kernel)
-        else:  # Closing
+        else: 
             result_array = cv2.morphologyEx(img_array, cv2.MORPH_CLOSE, kernel)
 
         result_img = Image.fromarray(result_array)
         st.image(result_img, caption=f"Image after operation {morph_op}", use_container_width=True)
 
-        # زر تنزيل
+        
         st.download_button(
             label=f"⬇️Download image {morph_op}",
             data=result_img.tobytes(),
@@ -325,11 +321,11 @@ def lesson7_page():
             mime="image/png"
         )
 
-    # زر العودة
+    
     if st.button("⬅️ Back", key="lesson7_back"):
         st.session_state.page = "home"
 
-# ---------- الدرس الثامن ----------
+# Lesson 8
 def lesson8_page():
     main_img = Image.open("PixelWise/Images/L8.png")
     st.image(main_img , use_container_width=True)
@@ -342,10 +338,10 @@ def lesson8_page():
             img = img.convert("RGB")
         img_array = np.array(img)
 
-        # عرض الصورة الأصلية
+        
         st.image(img, caption="Original image", use_container_width=True)
 
-        # اختيار نوع التحويل
+        
         transform_type = st.selectbox("Select geometric transformation type", ["Rotation angle", "Scaling factor", "Crop"])
 
         if transform_type == "Rotation angle":
@@ -358,7 +354,7 @@ def lesson8_page():
             scale = st.slider("Percent of Zoom in/ Zoom out", 0.1, 3.0, 1.0)
             (h, w) = img_array.shape[:2]
             transformed_array = cv2.resize(img_array, (int(w*scale), int(h*scale)))
-        else:  # قص
+        else:  # Crop
             st.markdown("Specify cropping ratios between 0 and 1")
             x_start = st.slider("Start ratio on width", 0.0, 1.0, 0.0)
             x_end = st.slider("End ratio on width", 0.0, 1.0, 1.0)
@@ -372,7 +368,7 @@ def lesson8_page():
         transformed_img = Image.fromarray(transformed_array)
         st.image(transformed_img, caption=f"Image after transformation{transform_type}", use_container_width=True)
 
-        # زر تنزيل
+        
         st.download_button(
             label=f"⬇️ Download image after {transform_type}",
             data=transformed_img.tobytes(),
@@ -380,12 +376,12 @@ def lesson8_page():
             mime="image/png"
         )
 
-    # زر العودة
+    
     if st.button("⬅️ Back", key="lesson8_back"):
         st.session_state.page = "home"
 
 
-# ---------- اختيار الصفحة ----------
+# Chossing the page 
 if st.session_state.page == "home":
     home_page()
 elif st.session_state.page == "lesson1":
