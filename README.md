@@ -149,15 +149,16 @@ streamlit run main.py
 ## 📁 Project Structure
 
 ```
-PixelWise/
-│
-├── main.py
-├── Images/
-│   ├── G1.png
-│   ├── L1.png
-│   ├── L2.png
-│   └── ...
-├── README.md
+ Photo-Project   
+├── PixelWise/
+    │
+    ├── main.py
+    ├── Images/
+    │   ├── .png
+    │   ├── .png
+    │   ├── .png
+    │   └── ...
+    ├── requirements.txt
 ```
 
 ---
